@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import "./App.css";
 import firebase from "../config";
+import "./App.css";
 
 class App extends Component {
   constructor(props) {
@@ -13,6 +13,7 @@ class App extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDeleteRoom = this.handleDeleteRoom.bind(this);
   }
 
   getDb(db) {
@@ -39,6 +40,17 @@ class App extends Component {
     });
   }
 
+  deleteRoom(index, id) {
+    // Removes room from state.rooms
+    const rooms = this.state.rooms;
+    rooms.splice(index, 1);
+    this.setState({ rooms });
+
+    // Removes room from firebase
+    const roomsRef = this.state.roomsRef;
+    return roomsRef.doc(`${id}`).delete();
+  }
+
   handleChange(e) {
     this.setState({ newRoom: e.target.value });
   }
@@ -49,20 +61,33 @@ class App extends Component {
     e.preventDefault();
   }
 
+  handleDeleteRoom(index, id) {
+    this.deleteRoom(index, id);
+  }
+
   componentDidMount() {
     this.getDb(this.state.roomsRef);
   }
 
   render() {
-    const rooms = this.state.rooms.map((r, i) => <li key={i}>{r.name}</li>);
+    const rooms = this.state.rooms.map((r, i) => (
+      <li
+        className="room-item"
+        key={i}>
+        <p className="pointer">{r.name}</p>
+        <p className="pointer" onClick={e => this.handleDeleteRoom(i, r.key)}>x</p>
+      </li>
+    ));
     console.log(this.state.rooms);
 
     return (
       <div className="App">
         <header className="App-header">
           <h1>Messaging App</h1>
+        </header>
 
-          <form className="add-room" onSubmit={this.handleSubmit}>
+        <div>
+          <form className="create-room" onSubmit={this.handleSubmit}>
             <label>
               <input
                 type="text"
@@ -82,7 +107,7 @@ class App extends Component {
               <ul>{rooms}</ul>
             )}
           </section>
-        </header>
+        </div>
       </div>
     );
   }

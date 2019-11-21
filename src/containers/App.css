@@ -1,22 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
+.create-room {
+  background-color: #ddd;
+  width: 30%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.room-list ul {
+  background-color: #ccc;
+  width: 30%;
+  list-style-type: none;
+}
+
+.room-item {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #09d3ac;
+  justify-content: space-between;
+  padding: 10px 15px;
 }
