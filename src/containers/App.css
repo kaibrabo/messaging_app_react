@@ -22,6 +22,7 @@
 }
 
 .messages-right {
+  background-color: #eee;
   width: 70%;
 }
 
@@ -45,4 +46,8 @@
   display: flex;
   justify-content: space-between;
   padding: 10px 15px;
+}
+
+.message-item {
+  list-style-type: none;
 }

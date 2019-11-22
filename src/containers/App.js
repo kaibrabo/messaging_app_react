@@ -13,7 +13,10 @@ class App extends Component {
       roomsRef: firebase.firestore().collection("rooms"), // Calls db once
       rooms: [],
       newRoom: "",
-      currentRoom: {}
+      currentRoom: {
+        name: "",
+        messages: [{ content: "select a person", sentAt: Date.now }]
+      }
     };
   }
 
@@ -32,16 +35,19 @@ class App extends Component {
 
   // Create new room
   createRoom() {
+    const room = { name: this.state.newRoom, messages: [] };
+
     // Adds room to firebase
     firebase
       .firestore()
       .collection("rooms")
-      .add({ name: this.state.newRoom });
+      .add(room);
 
     // Adds room to state
     this.setState({
-      rooms: [...this.state.rooms, { name: this.state.newRoom }],
-      newRoom: ""
+      rooms: [...this.state.rooms, room],
+      newRoom: "",
+      currentRoom: room
     });
   }
 
@@ -56,6 +62,9 @@ class App extends Component {
     const roomsRef = this.state.roomsRef;
     return roomsRef.doc(`${id}`).delete();
   }
+
+  // Select Room to make current room
+  selectRoom() {}
 
   // EVENT HANDLERS
   // using arrow func.'s negate method.bind(this) in constructor
@@ -72,6 +81,10 @@ class App extends Component {
     this.deleteRoom(index, id);
   };
 
+  handleSelectRoom = (r, i) => {
+    this.setState({ currentRoom: r });
+  };
+
   // LIFECYCLE METHODS
 
   componentDidMount() {
@@ -79,15 +92,6 @@ class App extends Component {
   }
 
   render() {
-    const rooms = this.state.rooms.map((r, i) => (
-      <li className="room-item" key={i}>
-        <p className="pointer">{r.name}</p>
-        <p className="pointer" onClick={e => this.handleDeleteRoom(i, r.key)}>
-          x
-        </p>
-      </li>
-    ));
-
     return (
       <div className="App">
         <header className="App-header">
@@ -101,11 +105,18 @@ class App extends Component {
               handleChange={this.handleChange}
               newRoom={this.state.newRoom}
             />
-            <RoomList rooms={rooms} roomsSize={this.state.rooms} />
+            <RoomList
+              rooms={this.state.rooms}
+              handleSelectRoom={this.handleSelectRoom}
+              handleDeleteRoom={this.handleDeleteRoom}
+            />
           </div>
 
           <div className="messages-right">
-            <MessageList />
+            <MessageList
+              currentRoom={this.state.currentRoom}
+              messages={this.state.currentRoom.messages}
+            />
           </div>
         </div>
       </div>

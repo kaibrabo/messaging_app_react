@@ -1,7 +1,27 @@
 import React from "react";
 
 const MessageList = props => {
-  return <h1>MessageList</h1>;
+  const messages = props.messages.map((m, i) => {
+    return (
+      <li className="message-item" key={i}>
+        <p>{m.content}</p>
+      </li>
+    );
+  });
+
+  return (
+    <section className="messages-list">
+      <p>
+        {props.currentRoom.name.length !== 0
+          ? props.currentRoom.name
+          : "Messages"}
+      </p>
+
+      <div>
+        {props.messages.length === 0 ? <p>loading...</p> : <ul>{messages}</ul>}
+      </div>
+    </section>
+  );
 };
 
 export default MessageList;
