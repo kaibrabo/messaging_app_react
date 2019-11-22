@@ -12,14 +12,32 @@
   text-align: center;
 }
 
+.messages-container {
+  display: flex;
+}
+
+.messages-left {
+  max-width: 300px;
+  width: 30%;
+}
+
+.messages-right {
+  width: 70%;
+}
+
 .create-room {
   background-color: #ddd;
-  width: 30%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-input {
+  width: 150px;
 }
 
 .room-list ul {
   background-color: #ccc;
-  width: 30%;
   list-style-type: none;
 }
 
