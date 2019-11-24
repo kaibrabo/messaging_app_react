@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import firebase from "../config";
+import firebase, { provider, auth } from "../config";
+import User from "../components/User";
 import CreateRoom from "../components/CreateRoom";
 import RoomList from "../components/RoomList";
 import MessageList from "../components/MessageList";
+import Footer from "../components/Footer";
 
 import "./App.css";
 
@@ -10,6 +12,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: null,
       roomsRef: firebase.firestore().collection("rooms"), // Calls db once
       rooms: [],
       newRoom: "",
@@ -66,6 +69,9 @@ class App extends Component {
   // Select Room to make current room
   selectRoom() {}
 
+  // Sign in user
+  signIn() {}
+
   // EVENT HANDLERS
   // using arrow func.'s negate method.bind(this) in constructor
   handleChange = e => {
@@ -85,9 +91,57 @@ class App extends Component {
     this.setState({ currentRoom: r });
   };
 
+  handleSignIn = e => {
+    auth
+      .signInWithPopup(provider)
+      .then(function(result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        // var token = result.credential.accessToken;
+        // The signed-in user info
+        this.setState({ user: result.user });
+        console.log("user2: ", this.state);
+      })
+      .catch(function(error) {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        const credential = error.credential;
+        // ...
+      });
+    console.log("handlSignIn");
+  };
+
+  handleSignOut = e => {
+    auth
+      .signOut()
+      .then(function() {
+        this.setState({ user: null });
+      })
+      .catch(function(error) {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("Errorode: ", errorCode);
+        console.log("ErrorMessage: ", errorMessage);
+      });
+  };
+
   // LIFECYCLE METHODS
 
   componentDidMount() {
+    // Set an observer on the Auth obj.
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user });
+      } else {
+        this.setState({ user: null });
+      }
+    });
+
+    // Gets messages
     this.getDb(this.state.roomsRef);
   }
 
@@ -95,7 +149,13 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Messaging App</h1>
+          <p>ZIM</p>
+
+          <User
+            handleSignIn={this.handleSignIn}
+            handleSignOut={this.handleSignOut}
+            user={this.state.user}
+          />
         </header>
 
         <div className="messages-container">
@@ -119,6 +179,8 @@ class App extends Component {
             />
           </div>
         </div>
+
+        <Footer />
       </div>
     );
   }

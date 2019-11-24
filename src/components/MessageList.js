@@ -11,13 +11,13 @@ const MessageList = props => {
 
   return (
     <section className="messages-list">
-      <p>
+      <p className="messages-list-title">
         {props.currentRoom.name.length !== 0
           ? props.currentRoom.name
           : "Messages"}
       </p>
 
-      <div>
+      <div className="messages-list-display">
         {props.messages.length === 0 ? <p>loading...</p> : <ul>{messages}</ul>}
       </div>
     </section>

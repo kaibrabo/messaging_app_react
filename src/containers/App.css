@@ -8,26 +8,71 @@
   cursor: pointer;
 }
 
+button {
+  background-color: inherit;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
 .App {
   text-align: center;
+  background-color: rgb(231, 230, 224);
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.App-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #005FEB;
+  color: white;
+  font-weight: 700;
+}
+
+.user-container {
+  
+}
+
+.auth-button {
+  display: flex;
+  justify-content: space-between;
+  width: 150px;
+  cursor: pointer;
 }
 
 .messages-container {
   display: flex;
+  height: 90vh;
 }
 
 .messages-left {
   max-width: 300px;
   width: 30%;
+  height: 100%;
 }
 
 .messages-right {
-  background-color: #eee;
   width: 70%;
 }
 
+.messages-list {
+  height: 100%;
+}
+
+.messages-list-title {
+  height: 30px;
+  padding: 11px 0 0;
+}
+
+.messages-list-display {
+  background-color: white;
+  height: 100%;
+}
+
 .create-room {
-  background-color: #ddd;
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -38,8 +83,8 @@
 }
 
 .room-list ul {
-  background-color: #ccc;
   list-style-type: none;
+  height: 100%;
 }
 
 .room-item {
@@ -50,4 +95,10 @@
 
 .message-item {
   list-style-type: none;
+}
+
+.footer {
+  background-color: rgb(231, 230, 224);
+  height: 40px;
+  padding: 10px;
 }

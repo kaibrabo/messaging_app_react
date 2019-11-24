@@ -16,6 +16,7 @@ const RoomList = props => {
 
   return (
     <section className="room-list">
+      <p>recents</p>
       {props.rooms.length === 0 ? <p>loading...</p> : <ul>{rooms}</ul>}
     </section>
   );
